@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Constants\Product\ProductConstant;
 
 class Product extends Model
 {
@@ -12,21 +13,16 @@ class Product extends Model
     protected $table = 'products';
 
     protected $fillable = [
-        'ProductId',
-        'ProductName',
-        'Description',
-        'Price',
-        'Discount',
-        'Quantity',
-        'IsActived',
-        'Created',
-        'Updated',
-        'ProductDetail',
+        ProductConstant::PRODUCT_NAME,
+        ProductConstant::PRODUCT_DESCRIPTION,
+        ProductConstant::PRODUCT_PRICE,
+        ProductConstant::PRODUCT_DISCOUNT,
+        ProductConstant::PRODUCT_QUANTITY,
+        ProductConstant::IS_ACTIVED,
+        ProductConstant::PRODUCT_DETAIL,
+        ProductConstant::CATEGORY_ID,
     ];
 
-    protected $casts = [
-        'IsActived' => 'boolean',
-        'Created' => 'datetime',
-        'Updated' => 'datetime',
-    ];
+    // Để Laravel tự động quản lý created_at và updated_at
+    public $timestamps = false;
 }

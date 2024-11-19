@@ -5,14 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Categories extends Model
-{
-    use HasFactory;
+// class Category extends Model
+// {
+//     use HasFactory;
 
-    protected $table = 'categories'; 
+//     // Đặt tên bảng trong cơ sở dữ liệu
+//     protected $table = 'categories'; 
 
-    protected $fillable = [
-        'CategoryId',
-        'catagoryName',
-    ];
-}
+//     // Khai báo các cột có thể được gán giá trị hàng loạt (mass assignable)
+//     protected $fillable = [
+//         'CategoryId',    // ID của danh mục
+//         'CategoryName',  // Tên danh mục
+//     ];
+
+//     // Định nghĩa quan hệ với bảng products
+//     public function products()
+//     {
+//         return $this->hasMany(Product::class, 'CategoryId', 'CategoryId');
+//     }
+// }
