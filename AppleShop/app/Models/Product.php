@@ -11,6 +11,9 @@ class Product extends Model
     use HasFactory;
 
     protected $table = 'products';
+    protected $primaryKey = ProductConstant::PRODUCT_ID;
+
+    protected $keyType = 'int';
 
     protected $fillable = [
         ProductConstant::PRODUCT_NAME,
