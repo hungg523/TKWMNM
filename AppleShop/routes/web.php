@@ -1,22 +1,43 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+//category
+use App\Http\Controllers\Category\CreateCategoriesController;
+use App\Http\Controllers\Category\UpdateCategoriesController;
+use App\Http\Controllers\Category\GetAllCategoriesController;
+use App\Http\Controllers\Category\GetByIdCategoriesController;
+//product
+use App\Http\Controllers\Product\CreateProductController;
+use App\Http\Controllers\Product\UpdateProductController;
+use App\Http\Controllers\Product\GetAllProductController;
+use App\Http\Controllers\Product\GetByIdProductController;
+use App\Http\Controllers\Product\GetByNameProductController;
+//Coupon
+use App\Http\Controllers\Coupon\CreateCouponController;
+use App\Http\Controllers\Coupon\UpdateCouponController;
+use App\Http\Controllers\Coupon\GetAllCouponController;
+use App\Http\Controllers\Coupon\GetByIdCouponController;
 
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CouponController;
 
-Route::prefix('products')->group(function () {
-    Route::get('/get-products', [ProductController::class, 'index']);
-    Route::post('/create-product', [ProductController::class, 'store']);
-    Route::put('/update-product/{id}', [ProductController::class, 'update']);
-    Route::delete('/delete-product/{id}', [ProductController::class, 'destroy']);
-    Route::get('/get-product-by-id/{id}', [ProductController::class, 'show']);
+Route::prefix('product')->group(function () {
+    Route::get('/get-all', [GetAllProductController::class, 'index']);
+    Route::post('/create', [CreateProductController::class, 'store']);
+    Route::put('/update/{id}', [UpdateProductController::class, 'update']);
+    Route::get('/get-by-name', [GetByNameProductController::class, 'getbyname']);
+    Route::get('/get-by-id/{id}', [GetByIdProductController::class, 'show']);
 });
 
-Route::prefix('coupons')->group(function () {
-    Route::get('/get-coupons', [CouponController::class, 'index']);
-    Route::post('/create-coupon', [CouponController::class, 'store']);
-    Route::put('/update-coupon/{id}', [CouponController::class, 'update']);
-    Route::delete('/delete-coupon/{id}', [CouponController::class, 'destroy']);
-    Route::get('/get-coupon-by-id/{id}', [CouponController::class, 'show']);
+Route::prefix('coupon')->group(function () {
+    Route::get('/get-all', [GetAllCouponController::class, 'index']);
+    Route::post('/create', [CreateCouponController::class, 'store']);
+    Route::put('/update/{id}', [UpdateCouponController::class, 'update']);
+    //Route::delete('/delete/{id}', [CouponController::class, 'destroy']);
+    Route::get('/get-by-id/{id}', [GetByIdCouponController::class, 'show']);
+});
+
+Route::prefix('category')->group(function () {
+    Route::get('/get-all', [GetAllCategoriesController::class, 'index']);
+    Route::post('/create', [CreateCategoriesController::class, 'store']);
+    Route::put('/update/{id}', [UpdateCategoriesController::class, 'update']);
+    Route::get('/get-by-id/{id}', [GetByIdCategoriesController::class, 'show']);
 });
