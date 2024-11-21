@@ -4,23 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Constants\Categories\CategoriesConstant;
 
-// class Category extends Model
-// {
-//     use HasFactory;
+class Categories extends Model
+{
+    use HasFactory;
 
-//     // Đặt tên bảng trong cơ sở dữ liệu
-//     protected $table = 'categories'; 
+    protected $table = 'categories';
+    protected $primaryKey = CategoriesConstant::CATEGORY_ID;
 
-//     // Khai báo các cột có thể được gán giá trị hàng loạt (mass assignable)
-//     protected $fillable = [
-//         'CategoryId',    // ID của danh mục
-//         'CategoryName',  // Tên danh mục
-//     ];
+    protected $keyType = 'int';
 
-//     // Định nghĩa quan hệ với bảng products
-//     public function products()
-//     {
-//         return $this->hasMany(Product::class, 'CategoryId', 'CategoryId');
-//     }
-// }
+    protected $fillable = [
+        CategoriesConstant::CATEGORY_ID,
+        CategoriesConstant::CATEGORY_NAME,
+    ];
+
+    public $timestamps = false;
+}
