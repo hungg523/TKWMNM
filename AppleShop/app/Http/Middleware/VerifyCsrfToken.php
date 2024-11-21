@@ -18,14 +18,14 @@ class VerifyCsrfToken extends Middleware
         '/product/update/*',
         '/product/delete/*',
         '/product/get-by-id/*',
-        '/product/get-by-name/*',
+        '/product/get-by-name',
 
         //coupon
-        '/coupons/create',
+        '/coupon/create',
         '/get-all',
-        '/coupons/update/*',
-        '/coupons/delete/*',
-        '/coupons/get-by-id/*',
+        '/coupon/update/*',
+        '/coupon/delete/*',
+        '/coupon/get-by-id/*',
 
         //categories
         '/category/create',

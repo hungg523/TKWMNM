@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Product;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 use App\Constants\Product\ProductConstant;
 
 class GetByNameProductController extends Controller
