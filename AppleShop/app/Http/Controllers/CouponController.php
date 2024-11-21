@@ -39,7 +39,7 @@ class CouponController extends Controller
             return response()->json(['errors' => $validator->errors()], 400);
         }
 
-        $coupon = coupon::create($request->all());
+        $coupon = Coupon::create($request->all());
         return response()->json($coupon, 201);
     }
 
@@ -68,9 +68,9 @@ class CouponController extends Controller
     }
 
     // Delete a specific coupon
-    public function destroy($coupon_id)
+    public function destroy($id)
     {
-        $coupon = Coupon::find($coupon_id);
+        $coupon = Coupon::find($id);
 
         if (!$coupon) {
             return response()->json(['message' => 'Coupon not found'], 404);

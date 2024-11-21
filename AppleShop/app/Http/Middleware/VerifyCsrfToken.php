@@ -13,17 +13,25 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //product
-        '/products/create-product',
-        '/get-products',
-        '/products/update-product/*',
-        '/products/delete-product/*',
-        '/products/get-product-by-id/*',
+        '/product/create',
+        '/get-all',
+        '/product/update/*',
+        '/product/delete/*',
+        '/product/get-by-id/*',
+        '/product/get-by-name/*',
 
         //coupon
-        '/coupons/create-coupon',
-        '/get-coupons',
-        '/coupons/update-coupon/*',
-        '/coupons/delete-coupon/*',
-        '/coupons/get-coupon-by-id/*',
+        '/coupons/create',
+        '/get-all',
+        '/coupons/update/*',
+        '/coupons/delete/*',
+        '/coupons/get-by-id/*',
+
+        //categories
+        '/category/create',
+        '/get-all',
+        '/category/update/*',
+        '/category/delete/*',
+        '/category/get-by-id/*',
     ];
 }
