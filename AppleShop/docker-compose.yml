@@ -1,48 +1,48 @@
-version: '3.8'
+version: "3.8"
 
 networks:
-  app-network:
-    driver: bridge
+    app-network:
+        driver: bridge
 
 volumes:
-  dbdata:
+    dbdata:
 
 services:
-  php-apache:
-    image: php:8.1-fpm
-    container_name: php-apache
-    working_dir: /var/www
-    volumes:
-      - ./:/var/www
-    networks:
-      - app-network
-    environment:
-      - APACHE_DOCUMENT_ROOT=/var/www/public
-    command: /bin/sh -c "docker-php-ext-install pdo pdo_mysql && php-fpm -F"
+    php-apache:
+        image: php:8.1-fpm
+        container_name: php-apache
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+        networks:
+            - app-network
+        environment:
+            - APACHE_DOCUMENT_ROOT=/var/www/public
+        command: /bin/sh -c "docker-php-ext-install pdo pdo_mysql && php-fpm -F"
 
-  nginx:
-    image: nginx:alpine
-    container_name: nginx
-    working_dir: /var/www
-    volumes:
-      - ./:/var/www
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-    ports:
-      - "8000:80"
-    networks:
-      - app-network
+    nginx:
+        image: nginx:alpine
+        container_name: nginx
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+        ports:
+            - "8000:80"
+        networks:
+            - app-network
 
-  mysql:
-    image: mysql:latest
-    container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: laravel
-      MYSQL_USER: user
-      MYSQL_PASSWORD: root
-    volumes:
-      - ./data:/var/lib/mysql
-    ports:
-      - "3307:3306"
-    networks:
-      - app-network
+    mysql:
+        image: mysql:latest
+        container_name: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: hht_appleshop
+            MYSQL_USER: user
+            MYSQL_PASSWORD: root
+        volumes:
+            - ./data:/var/lib/mysql
+        ports:
+            - "3307:3306"
+        networks:
+            - app-network

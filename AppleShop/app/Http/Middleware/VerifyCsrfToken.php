@@ -33,5 +33,8 @@ class VerifyCsrfToken extends Middleware
         '/category/update/*',
         '/category/delete/*',
         '/category/get-by-id/*',
+
+        //Users
+        '/user/create',
     ];
 }

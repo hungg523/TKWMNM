@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Constants\Users\UserConstant;
+
 
 class Users extends Model
 {
@@ -11,20 +13,20 @@ class Users extends Model
 
     protected $table = 'users';
     protected $fillable = [
-        'UsersId',
-        'Username',
-        'PhoneNumber',
-        'Render',
-        'DateOfBirth',
-        'ImgAvatar',
-        'Password',
-        'Email',
-        'Roles',
-        'IsActived',
+        UserConstant::USER_ID,
+        UserConstant::USER_USERNAME,
+        UserConstant::USER_PHONE_NUMBER,
+        UserConstant::USER_RENDER,
+        UserConstant::USER_DATE_OF_BIRTH,
+        UserConstant::USER_IMG_AVATAR,
+        UserConstant::USER_PASSWORD,
+        UserConstant::USER_EMAIL,
+        UserConstant::OTP,
+        UserConstant::OTP_EXPIRATION,
+        UserConstant::USER_ROLES,
+        UserConstant::USER_IS_ACTIVED,
+        UserConstant::CREATE_AT,
     ];
 
-    protected $casts = [
-        'DateOfBirth' => 'datetime',
-        'IsActived' => 'boolean',
-    ];
+    public $timestamps = false;
 }

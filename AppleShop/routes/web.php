@@ -1,6 +1,6 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
+
 //category
 use App\Http\Controllers\Category\CreateCategoriesController;
 use App\Http\Controllers\Category\UpdateCategoriesController;
@@ -17,7 +17,8 @@ use App\Http\Controllers\Coupon\CreateCouponController;
 use App\Http\Controllers\Coupon\UpdateCouponController;
 use App\Http\Controllers\Coupon\GetAllCouponController;
 use App\Http\Controllers\Coupon\GetByIdCouponController;
-
+//User
+use App\Http\Controllers\Users\CreateUserController;
 
 Route::prefix('product')->group(function () {
     Route::get('/get-all', [GetAllProductController::class, 'index']);
@@ -40,4 +41,11 @@ Route::prefix('category')->group(function () {
     Route::post('/create', [CreateCategoriesController::class, 'store']);
     Route::put('/update/{id}', [UpdateCategoriesController::class, 'update']);
     Route::get('/get-by-id/{id}', [GetByIdCategoriesController::class, 'show']);
+});
+
+Route::prefix('user')->group(function () {
+    //Route::get('/get-all', [GetAllCategoriesController::class, 'index']);
+    Route::post('/create', [CreateUserController::class, 'register']);
+    //Route::put('/update/{id}', [UpdateCategoriesController::class, 'update']);
+    //Route::get('/get-by-id/{id}', [GetByIdCategoriesController::class, 'show']);
 });
