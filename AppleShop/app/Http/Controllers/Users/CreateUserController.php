@@ -54,30 +54,33 @@ class CreateUserController extends Controller
 
                 $user->save();
             }
+
+            // Email subject and body
             $subject = "Xác thực tài khoản!";
             $body = "<div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;'>
-        <div style='padding: 20px; border-bottom: 3px solid #4CAF50; text-align: center;'>
-            <img src='https://drive.google.com/uc?export=view&id=16HsextqqzKJklrRHmX4Qi3RNRM-x1s6e' alt='Logo' style='width: 150px; margin-bottom: 10px;' />
-            <h2 style='color: #4CAF50; font-weight: bold; margin: 0;'>Xác thực tài khoản</h2>
-        </div>
-        <div style='padding: 20px;'>
-            <p>Xin chào,<br>
-            Cảm ơn bạn đã đăng ký tài khoản tại hệ thống của chúng tôi. Để hoàn tất quá trình đăng ký, vui lòng sử dụng mã xác thực bên dưới:</p>
-            <div style='margin: 20px 0; padding: 15px; background-color: #f8f8f8; border-radius: 8px; text-align: center; font-size: 24px; font-weight: bold; color: #4CAF50;'>
-                {$otp}
-            </div>
-            <p>Nếu bạn không thực hiện yêu cầu này, vui lòng bỏ qua email này.</p>
-            <p>Trân trọng,<br/>HHT Pharmacy Community!</p>
-        </div>
-        <div style='background-color: #4CAF50; color: white; padding: 10px; text-align: center; font-size: 12px; border-top: 3px solid #4CAF50;'>
-            © 2024 HHT Pharmacy
-        </div>
-    </div>";
+                <div style='padding: 20px; border-bottom: 3px solid #4CAF50; text-align: center;'>
+                    <img src='https://drive.google.com/uc?export=view&id=16HsextqqzKJklrRHmX4Qi3RNRM-x1s6e' alt='Logo' style='width: 150px; margin-bottom: 10px;' />
+                    <h2 style='color: #4CAF50; font-weight: bold; margin: 0;'>Xác thực tài khoản</h2>
+                </div>
+                <div style='padding: 20px;'>
+                    <p>Xin chào,<br>
+                    Cảm ơn bạn đã đăng ký tài khoản tại hệ thống của chúng tôi. Để hoàn tất quá trình đăng ký, vui lòng sử dụng mã xác thực bên dưới:</p>
+                    <div style='margin: 20px 0; padding: 15px; background-color: #f8f8f8; border-radius: 8px; text-align: center; font-size: 24px; font-weight: bold; color: #4CAF50;'>
+                        {$otp}
+                    </div>
+                    <p>Nếu bạn không thực hiện yêu cầu này, vui lòng bỏ qua email này.</p>
+                    <p>Trân trọng,<br/>HHT Pharmacy Community!</p>
+                </div>
+                <div style='background-color: #4CAF50; color: white; padding: 10px; text-align: center; font-size: 12px; border-top: 3px solid #4CAF50;'>
+                    © 2024 HHT Pharmacy
+                </div>
+            </div>";
 
+            // Sending email
             Mail::send([], [], function ($message) use ($request, $subject, $body) {
                 $message->to($request->email)
                     ->subject($subject)
-                    ->html($body);
+                    ->html($body, 'text/html');
             });
 
             DB::commit();
