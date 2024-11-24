@@ -27,7 +27,7 @@ jobs:
       # Step 2: Create Pull Request from sub to main
       - name: Create Pull Request
         id: create_pr
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@latest
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: sub
