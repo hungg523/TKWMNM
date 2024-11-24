@@ -7,3 +7,4 @@ vendor
 storage/logs/*
 bootstrap/cache/*
 ./data
+/data

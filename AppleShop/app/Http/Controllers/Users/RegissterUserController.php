@@ -34,37 +34,40 @@ class RegissterUserController extends Controller
                 UserConstant::USER_EMAIL => 'required|email',
                 UserConstant::USER_PASSWORD => 'required|string',
                 'imageData'
-
             ]);
-
-            $data = $request;
-
-            // Xử lý upload file nếu có
-            $filePath = null;
-            if (!empty($data['imageData'])) {
-                $fileName = "product_image" . $this->fileService->getFileExtensionFromBase64($data['imageData']);
-                $filePath = $this->fileService->uploadFile($fileName, $data['imageData'], AssetType::USER_IMG);
-            }
-
+            
             if ($validator->fails()) {
                 return response()->json(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
             }
 
-            $otp = strtoupper(Str::random(6));
-            $username = str::random(10);
-
-            $existingUser = Users::where(UserConstant::USER_EMAIL, $request->input(UserConstant::USER_EMAIL))
+            $user = Users::where(UserConstant::USER_EMAIL, $request->input(UserConstant::USER_EMAIL))
                 ->where(UserConstant::USER_IS_ACTIVED, false)
                 ->first();
+            // Xử lý upload file nếu có
+            if (!empty($request['imageData'])) {
+                $newFileExtension = strtolower($this->fileService->getFileExtensionFromBase64($request['imageData']));
+                $currentFileName = !empty($user->{UserConstant::USER_IMG_AVATAR}) ? basename($user->{UserConstant::USER_IMG_AVATAR}) : null;
+                $currentFileExtension = $currentFileName ? strtolower(pathinfo($currentFileName, PATHINFO_EXTENSION)) : null;
 
-            if ($existingUser) {
-                $existingUser->{UserConstant::USER_USERNAME} = $username;
-                $existingUser->{UserConstant::USER_PASSWORD} = bcrypt($request->input(UserConstant::USER_PASSWORD));
-                $existingUser->{UserConstant::OTP} = $otp;
-                $existingUser->{UserConstant::USER_IMG_AVATAR} = $filePath;
+                if ($currentFileName && ".".$currentFileExtension === $newFileExtension) {
+                    $fileName = $currentFileName;
+                } else {
+                    $fileName = substr((string) Str::uuid(), 0, 4) . $newFileExtension;
+                }
 
-                $existingUser->{UserConstant::OTP_EXPIRATION} = now()->addSeconds(5);
-                $existingUser->save();
+                $filePath = $this->fileService->uploadFile($fileName, $request['imageData'], AssetType::USER_IMG);
+            }
+            dd($newFileExtension, $currentFileName, $currentFileExtension, $fileName);
+            $otp = strtoupper(Str::random(6));
+            $username = "user_".str::random(10);
+
+            if ($user) {
+                $user->{UserConstant::USER_USERNAME} = $username;
+                $user->{UserConstant::USER_PASSWORD} = bcrypt($request->input(UserConstant::USER_PASSWORD));
+                $user->{UserConstant::OTP} = $otp;
+                $user->{UserConstant::USER_IMG_AVATAR} = $filePath;
+                $user->{UserConstant::OTP_EXPIRATION} = now()->addSeconds(5);
+                $user->save();
             } else {
                 $user = new Users();
                 $user->{UserConstant::USER_USERNAME} = $username;

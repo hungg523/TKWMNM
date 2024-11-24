@@ -31,8 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'asset_server' => [
-        'url' => env('ASSET_SERVER_URL'),
+    'asset_service' => [
+        'url' => env('ASSET_SERVER_URL', 'https://assets-server:8081'),
+        'directory' => env('ASSET_DIRECTORY', 'assets'),
     ],
 
 ];

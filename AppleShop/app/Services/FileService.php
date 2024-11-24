@@ -14,7 +14,8 @@ class FileService
     public function __construct()
     {
         // Đọc URL của asset server từ file cấu hình .env hoặc config
-        $this->assetServerUrl = Config::get('services.asset_server.url');
+        $this->assetServerUrl = config('services.asset_service.url');
+        $this->assetDirectory = config('services.asset_service.directory');
     }
 
     /**
@@ -36,7 +37,7 @@ class FileService
             ];
 
             // Gửi yêu cầu POST tới Asset Server
-            $response = Http::post($this->assetServerUrl . '/upload', $requestContent);
+            $response = Http::withOptions(['verify' => false])->post($this->assetServerUrl . '/upload', $requestContent);
 
             // Kiểm tra nếu yêu cầu thất bại
             if ($response->failed()) {
