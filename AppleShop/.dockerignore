@@ -6,5 +6,4 @@ vendor/
 vendor
 storage/logs/*
 bootstrap/cache/*
-./data
-/data
+mysql.sock
