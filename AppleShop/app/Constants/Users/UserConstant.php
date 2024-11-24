@@ -6,7 +6,6 @@ class UserConstant
     public const USER_ID = "user_id";
     public const USER_USERNAME = "username";
     public const USER_PHONE_NUMBER = "phone_number";
-    public const USER_RENDER = "render";
     public const USER_DATE_OF_BIRTH = "date_of_birth";
     public const USER_IMG_AVATAR = "img_avatar";
     public const USER_PASSWORD = "password";

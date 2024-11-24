@@ -7,55 +7,36 @@ use App\Constants\Users\UserConstant;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Str;
 
-class CreateUserController extends Controller
+class ResentOtpUserController extends Controller
 {
-    // Register a new customer
-    public function register(Request $request)
+    public function resendOtp(Request $request)
     {
         DB::beginTransaction();
         try {
-            // Validate the request
-            $validator = Validator::make($request->all(), [
-                UserConstant::USER_USERNAME => 'nullable|string|max:255',
-                UserConstant::USER_RENDER => 'required|string|max:255',
-                UserConstant::USER_EMAIL => 'required|email|unique:users,email',
-                UserConstant::USER_PASSWORD => 'required|string'
-            ]);
+            Log::info('Start resend OTP request', ['request' => $request->all()]);
 
-            if ($validator->fails()) {
-                return response()->json(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
-            }
-
-            $otp = strtoupper(Str::random(6));
-
-            $existingUser = Users::where(UserConstant::USER_EMAIL, $request->email)
+            $customer = Users::where(UserConstant::USER_EMAIL, $request->input(UserConstant::USER_EMAIL))
                 ->where(UserConstant::USER_IS_ACTIVED, false)
                 ->first();
 
-            if ($existingUser) {
-                $existingUser->password = bcrypt($request->password);
-                $existingUser->otp = $otp;
-                $existingUser->otp_expiration = now()->addSeconds(90);
-                $existingUser->save();
-            } else {
-                $user = new Users();
-                $user->{UserConstant::USER_EMAIL} = $request->email;
-                $user->{UserConstant::USER_PASSWORD} = bcrypt($request->password);
-                $user->otp = $otp;
-                $user->otp_expiration = now()->addSeconds(90);
-                $user->{UserConstant::USER_ROLES} = 0;
-                $user->{UserConstant::USER_IS_ACTIVED} = false;
-                $user->created_at = now();
-
-                $user->save();
+            if (!$customer) {
+                return response()->json([
+                    'error' => 'Customer not found or already active.',
+                ], Response::HTTP_NOT_FOUND);
             }
 
-            // Email subject and body
+            // Tạo OTP mới và cập nhật thời gian hết hạn
+            $otp = strtoupper(Str::random(6));
+            $customer->{UserConstant::OTP} = $otp;
+            $customer->{UserConstant::OTP_EXPIRATION} = now()->addSeconds(90);
+            $customer->save();
+
+            // Gửi email OTP
             $subject = "Xác thực tài khoản!";
             $body = "<div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;'>
                 <div style='padding: 20px; border-bottom: 3px solid #4CAF50; text-align: center;'>
@@ -76,22 +57,24 @@ class CreateUserController extends Controller
                 </div>
             </div>";
 
-            // Sending email
+            Log::info('Sending OTP email', ['email' => $request->input(UserConstant::USER_EMAIL)]);
+
+            // Gửi email thông qua Laravel Mail
             Mail::send([], [], function ($message) use ($request, $subject, $body) {
-                $message->to($request->email)
+                $message->to($request->input(UserConstant::USER_EMAIL))
                     ->subject($subject)
-                    ->html($body, 'text/html');
+                    ->html($body);
             });
-
             DB::commit();
-
-            return response()->json(['message' => 'Customer registered successfully. Please check your email for OTP.'], Response::HTTP_CREATED);
+            Log::info('OTP resend completed successfully');
+            return response()->json(['message' => 'OTP has been resent successfully. Please check your email.'], Response::HTTP_OK);
         } catch (\Exception $e) {
+            // Rollback nếu gặp lỗi
             DB::rollBack();
+            Log::error('Error occurred during OTP resend', ['exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return response()->json([
-                'isSuccess' => false,
-                'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'stageTrace' => $e->getTraceAsString(),
+                'error' => 'An error occurred while resending OTP.',
+                'details' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
