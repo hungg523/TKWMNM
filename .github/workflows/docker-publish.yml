@@ -8,26 +8,22 @@ on:
 jobs:
   create-pull-request:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       # Step 1: Checkout repository to work with sub branch
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: sub
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Pull Latest Changes
-        run: |
-          git config --global user.name "hungg523"
-          git config --global user.email "hoanghung52304@gmail.com"
-          git checkout sub
-          git pull origin sub
-
       # Step 2: Create Pull Request from sub to main
       - name: Create Pull Request
         id: create_pr
-        uses: peter-evans/create-pull-request@latest
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: sub
@@ -46,36 +42,29 @@ jobs:
       
       # Step 3: Auto-merge the created Pull Request
       - name: Auto-merge Pull Request
-        if: ${{ steps.create_pr.outputs.pull-request-number && steps.create_pr.outputs.pull-request-number != '' }}
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const prNumber = parseInt("${{ steps.create_pr.outputs.pull-request-number }}");
-            const pr = await github.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber,
-            });
-
-            if (pr && pr.data.state === "open") {
-              await github.pulls.merge({
+            if (prNumber) {
+              const pr = await github.pulls.get({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: prNumber,
-                merge_method: "merge",
               });
 
-      # Step 4: Sync sub branch with the latest main branch
-      - name: Sync sub branch with main
-        run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout sub
-          git pull origin main
-          git push origin sub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              if (pr && pr.data.state === "open") {
+                await github.pulls.merge({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prNumber,
+                  merge_method: "merge",
+                });
+              }
+            } else {
+              throw new Error('Pull Request number is not valid.');
+            }
 
   build-and-push:
     runs-on: ubuntu-latest
