@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: sub
 
       # Create Pull Request from sub to main
       - name: Create Pull Request
@@ -55,6 +57,18 @@ jobs:
       # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: sub
+
+      # Sync sub branch with main after PR merge
+      - name: Sync sub branch with main
+        run: |
+          git fetch origin
+          git checkout sub
+          git pull origin main
+          git push origin sub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -96,10 +110,10 @@ jobs:
       # Commit and Push Changes
       - name: Commit and Push Changes
         run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "hung523"
+          git config user.email "hoanghung52304@gmail.com"
           git add .
-          git commit -m "Update after build on sub branch"
+          git commit -m "Update after build on sub branch" || echo "Nothing to commit"
           git push origin sub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
