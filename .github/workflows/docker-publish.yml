@@ -71,32 +71,32 @@ jobs:
           
       
       # Step 3: Auto-merge the created Pull Request
-      - name: Auto-merge Pull Request
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const prNumber = ${{ steps.create_pr.outputs.pull-request-number }};
-            if (prNumber) {
-              const pr = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: parseInt(prNumber),
-              });
+      # - name: Auto-merge Pull Request
+      #   uses: actions/github-script@v7
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       const prNumber = ${{ steps.create_pr.outputs.pull-request-number }};
+      #       if (prNumber) {
+      #         const pr = await github.rest.pulls.get({
+      #           owner: context.repo.owner,
+      #           repo: context.repo.repo,
+      #           pull_number: parseInt(prNumber),
+      #         });
 
-              if (pr && pr.data.state === "open") {
-                await github.rest.pulls.merge({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  pull_number: parseInt(prNumber),
-                  merge_method: "merge",
-                });
-              } else {
-                console.log("Pull Request is not open or doesn't exist.");
-              }
-            } else {
-              throw new Error('Pull Request number is not valid.');
-            }
+      #         if (pr && pr.data.state === "open") {
+      #           await github.rest.pulls.merge({
+      #             owner: context.repo.owner,
+      #             repo: context.repo.repo,
+      #             pull_number: parseInt(prNumber),
+      #             merge_method: "merge",
+      #           });
+      #         } else {
+      #           console.log("Pull Request is not open or doesn't exist.");
+      #         }
+      #       } else {
+      #         throw new Error('Pull Request number is not valid.');
+      #       }
 
   build-and-push:
     runs-on: ubuntu-latest
