@@ -1,13 +1,55 @@
-name: Build and Push Docker Images
+name: Create Pull Request, Merge, and Build Docker
 
 on:
   push:
     branches:
-      - main
+      - sub
 
 jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Create Pull Request from sub to main
+      - name: Create Pull Request
+        id: create_pr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: sub
+          base: main
+          title: "Auto Pull Request from sub to main"
+          body: |
+            This pull request has been created automatically to merge changes from the `sub` branch into the `main` branch.
+
+      # Wait for PR to be merged
+      - name: Auto-merge Pull Request
+        if: steps.create_pr.outputs.pull-request-url
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = await github.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: parseInt("${{ steps.create_pr.outputs.pull-request-number }}"),
+            });
+
+            if (pr && pr.data.state === "open") {
+              await github.pulls.merge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: parseInt("${{ steps.create_pr.outputs.pull-request-number }}"),
+                merge_method: "merge",
+              });
+            }
+
   build-and-push:
     runs-on: ubuntu-latest
+    needs: create-pull-request
+    if: success()
     env:
       SERVICES: appleshop
     steps:
