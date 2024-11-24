@@ -30,6 +30,7 @@ jobs:
 
       # Step 3: Auto-merge the created Pull Request
       - name: Auto-merge Pull Request
+        if: steps.create_pr.outputs.pull-request-number != ''
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
