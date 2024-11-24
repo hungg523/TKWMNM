@@ -36,6 +36,12 @@ jobs:
             echo "Changes detected. Proceeding with PR creation."
           fi
 
+          - name: Reset sub branch
+          run: |
+            git fetch origin sub
+            git checkout sub
+            git reset --hard origin/sub        
+
       # Step 2: Create Pull Request from sub to main
       - name: Create Pull Request
         id: create_pr
@@ -44,6 +50,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: sub
           base: main
+          branch-suffix: timestamp
           title: "Auto Pull Request from sub to main"
           body: |
             This pull request has been created automatically to merge changes from the `sub` branch into the `main` branch.
