@@ -21,7 +21,9 @@ jobs:
 
       # Build Docker images using Docker Compose
       - name: Build Docker Images
-        run: docker build -t lolmobi495/doan:appleshop .
+        run: |
+          cd .\AppleShop\
+          docker build -t lolmobi495/doan:appleshop .
 
       # Push Docker images to Docker Hub
       - name: Push Docker Images
