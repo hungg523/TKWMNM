@@ -66,7 +66,7 @@ jobs:
           git fetch origin
           git checkout sub
           git pull origin main
-          git push origin sub
+          git push -u origin sub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -114,7 +114,7 @@ jobs:
           git config user.email "hoanghung52304@gmail.com"
           git add .
           git commit -m "Update after build on sub branch" || echo "Nothing to commit"
-          git push origin sub
+          git push -u origin sub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
