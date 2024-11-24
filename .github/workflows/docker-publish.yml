@@ -58,15 +58,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: sub
+          ref: main
 
       # Sync sub branch with main after PR merge
       - name: Sync sub branch with main
         run: |
-          git fetch origin
+          git config user.name "hungg523"
+          git config user.email "hoanghung52304@gmail.com"
           git checkout sub
-          git pull origin main
-          git push -u origin sub
+          git rebase main
+          git push origin sub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -110,11 +111,11 @@ jobs:
       # Commit and Push Changes
       - name: Commit and Push Changes
         run: |
-          git config user.name "hung523"
+          git config user.name "hungg523"
           git config user.email "hoanghung52304@gmail.com"
           git add .
           git commit -m "Update after build on sub branch" || echo "Nothing to commit"
-          git push -u origin sub
+          git push origin sub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
