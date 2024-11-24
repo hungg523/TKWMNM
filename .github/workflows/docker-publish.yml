@@ -15,6 +15,7 @@ jobs:
         with:
           ref: sub
           fetch-depth: 0
+          persist-credentials: true
 
       # Step 2: Create Pull Request from sub to main
       - name: Create Pull Request
