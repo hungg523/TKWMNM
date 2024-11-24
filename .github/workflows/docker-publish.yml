@@ -12,6 +12,11 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Set Git User
+        run: |
+          git config --global user.name "hungg523"
+          git config --global user.email "hoanghung52304@gmail.com"
+
       # Step 1: Checkout repository to work with sub branch
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -32,13 +37,12 @@ jobs:
           body: |
             This pull request has been created automatically to merge changes from the `sub` branch into the `main` branch.
       
-      - name: Debug Pull Request Number
-        run: echo "Pull request number is ${{ steps.create_pr.outputs.pull-request-number }}"
-
-      - name: Check differences between sub and main
+      - name: Debug Pull Request Outputs
         run: |
-          git fetch origin main
-          git diff --name-only origin/main
+          echo "Pull Request Number: ${{ steps.create_pr.outputs.pull-request-number }}"
+          echo "Pull Request URL: ${{ steps.create_pr.outputs.pull-request-url }}"
+          echo "Pull Request Operation: ${{ steps.create_pr.outputs.pull-request-operation }}"
+          
       
       # Step 3: Auto-merge the created Pull Request
       - name: Auto-merge Pull Request
