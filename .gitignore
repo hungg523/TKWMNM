@@ -20,4 +20,4 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
-/docker/data
+mysql.sock
