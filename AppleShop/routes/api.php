@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 
 //category
@@ -18,6 +17,13 @@ use App\Http\Controllers\Coupon\CreateCouponController;
 use App\Http\Controllers\Coupon\UpdateCouponController;
 use App\Http\Controllers\Coupon\GetAllCouponController;
 use App\Http\Controllers\Coupon\GetByIdCouponController;
+//User
+use App\Http\Controllers\Users\RegissterUserController;
+use App\Http\Controllers\Users\AuthenUserController;
+use App\Http\Controllers\Users\ResentOtpUserController;
+use App\Http\Controllers\Users\LoginUserController;
+use App\Http\Controllers\Users\GetAllUserController;
+use App\Http\Controllers\Users\GetByIdUserController;
 
 
 Route::prefix('product')->group(function () {
@@ -41,4 +47,13 @@ Route::prefix('category')->group(function () {
    Route::post('/create', [CreateCategoriesController::class, 'store']);
    Route::put('/update/{id}', [UpdateCategoriesController::class, 'update']);
    Route::get('/get-by-id/{id}', [GetByIdCategoriesController::class, 'show']);
+});
+
+Route::prefix('user')->group(function () {
+   Route::post('/resend-otp', [ResentOtpUserController::class, 'resendOtp']);
+   Route::post('/register', [RegissterUserController::class, 'register']);
+   Route::put('/vertify-otp', [AuthenUserController::class, 'authen']);
+   Route::get('/get-all', [GetAllUserController::class, 'index']);
+   Route::post('/login', [LoginUserController::class, 'login']);
+   Route::get('/get-by-id/{id}', [GetByIdUserController::class, 'show']);
 });
