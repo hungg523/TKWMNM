@@ -13,6 +13,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: sub
+          fetch-depth: 0
 
       # Create Pull Request from sub to main
       - name: Create Pull Request
