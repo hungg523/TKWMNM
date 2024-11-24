@@ -17,6 +17,14 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
+      - name: Sync sub branch with main
+        run: |
+          git fetch origin sub
+          git checkout sub
+          git pull origin sub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       # Step 2: Create Pull Request from sub to main
       - name: Create Pull Request
         id: create_pr
