@@ -34,12 +34,7 @@ jobs:
             exit 0
           else
             echo "Changes detected. Proceeding with PR creation."
-          fi
-
-      - name: Reset sub branch
-        run: |
-          git checkout sub
-          git pull origin sub       
+          fi   
 
       # Step 2: Create Pull Request from sub to main
       - name: Create Pull Request
