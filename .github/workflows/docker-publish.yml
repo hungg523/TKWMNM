@@ -25,6 +25,17 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
+      - name: Check for changes
+        id: changes_check
+        run: |
+          git fetch origin main
+          if git diff --quiet origin/main; then
+            echo "No changes to be pulled. Exiting."
+            exit 0
+          else
+            echo "Changes detected. Proceeding with PR creation."
+          fi
+
       # Step 2: Create Pull Request from sub to main
       - name: Create Pull Request
         id: create_pr
