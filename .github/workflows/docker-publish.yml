@@ -31,6 +31,11 @@ jobs:
       - name: Debug Pull Request Number
         run: echo "Pull request number is ${{ steps.create_pr.outputs.pull-request-number }}"
 
+      - name: Check differences between sub and main
+        run: |
+          git fetch origin main
+          git diff --name-only origin/main
+      
       # Step 3: Auto-merge the created Pull Request
       - name: Auto-merge Pull Request
         if: ${{ steps.create_pr.outputs.pull-request-number && steps.create_pr.outputs.pull-request-number != '' }}
