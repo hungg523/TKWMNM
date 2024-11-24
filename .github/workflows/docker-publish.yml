@@ -27,10 +27,13 @@ jobs:
           title: "Auto Pull Request from sub to main"
           body: |
             This pull request has been created automatically to merge changes from the `sub` branch into the `main` branch.
+      
+      - name: Debug Pull Request Number
+        run: echo "Pull request number is ${{ steps.create_pr.outputs.pull-request-number }}"
 
       # Step 3: Auto-merge the created Pull Request
       - name: Auto-merge Pull Request
-        if: steps.create_pr.outputs.pull-request-number != ''
+        if: ${{ steps.create_pr.outputs.pull-request-number && steps.create_pr.outputs.pull-request-number != '' }}
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
