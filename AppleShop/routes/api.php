@@ -24,36 +24,42 @@ use App\Http\Controllers\Users\ResentOtpUserController;
 use App\Http\Controllers\Users\LoginUserController;
 use App\Http\Controllers\Users\GetAllUserController;
 use App\Http\Controllers\Users\GetByIdUserController;
+//Order
+use App\Http\Controllers\Order\CreateOrderController;
 
 
 Route::prefix('product')->group(function () {
-   Route::get('/get-all', [GetAllProductController::class, 'index']);
-   Route::post('/create', [CreateProductController::class, 'store']);
-   Route::put('/update/{id}', [UpdateProductController::class, 'update']);
-   Route::get('/get-by-name', [GetByNameProductController::class, 'getbyname']);
-   Route::get('/get-by-id/{id}', [GetByIdProductController::class, 'show']);
+    Route::get('/get-all', [GetAllProductController::class, 'index']);
+    Route::post('/create', [CreateProductController::class, 'store']);
+    Route::put('/update/{id}', [UpdateProductController::class, 'update']);
+    Route::get('/get-by-name', [GetByNameProductController::class, 'getbyname']);
+    Route::get('/get-by-id/{id}', [GetByIdProductController::class, 'show']);
 });
 
 Route::prefix('coupon')->group(function () {
-   Route::get('/get-all', [GetAllCouponController::class, 'index']);
-   Route::post('/create', [CreateCouponController::class, 'store']);
-   Route::put('/update/{id}', [UpdateCouponController::class, 'update']);
-   //Route::delete('/delete/{id}', [CouponController::class, 'destroy']);
-   Route::get('/get-by-id/{id}', [GetByIdCouponController::class, 'show']);
+    Route::get('/get-all', [GetAllCouponController::class, 'index']);
+    Route::post('/create', [CreateCouponController::class, 'store']);
+    Route::put('/update/{id}', [UpdateCouponController::class, 'update']);
+    //Route::delete('/delete/{id}', [CouponController::class, 'destroy']);
+    Route::get('/get-by-id/{id}', [GetByIdCouponController::class, 'show']);
 });
 
 Route::prefix('category')->group(function () {
-   Route::get('/get-all', [GetAllCategoriesController::class, 'index']);
-   Route::post('/create', [CreateCategoriesController::class, 'store']);
-   Route::put('/update/{id}', [UpdateCategoriesController::class, 'update']);
-   Route::get('/get-by-id/{id}', [GetByIdCategoriesController::class, 'show']);
+    Route::get('/get-all', [GetAllCategoriesController::class, 'index']);
+    Route::post('/create', [CreateCategoriesController::class, 'store']);
+    Route::put('/update/{id}', [UpdateCategoriesController::class, 'update']);
+    Route::get('/get-by-id/{id}', [GetByIdCategoriesController::class, 'show']);
 });
 
 Route::prefix('user')->group(function () {
-   Route::post('/resend-otp', [ResentOtpUserController::class, 'resendOtp']);
-   Route::post('/register', [RegissterUserController::class, 'register']);
-   Route::put('/vertify-otp', [AuthenUserController::class, 'authen']);
-   Route::get('/get-all', [GetAllUserController::class, 'index']);
-   Route::post('/login', [LoginUserController::class, 'login']);
-   Route::get('/get-by-id/{id}', [GetByIdUserController::class, 'show']);
+    Route::post('/resend-otp', [ResentOtpUserController::class, 'resendOtp']);
+    Route::post('/register', [RegissterUserController::class, 'register']);
+    Route::put('/vertify-otp', [AuthenUserController::class, 'authen']);
+    Route::get('/get-all', [GetAllUserController::class, 'index']);
+    Route::post('/login', [LoginUserController::class, 'login']);
+    Route::get('/get-by-id/{id}', [GetByIdUserController::class, 'show']);
+});
+
+Route::prefix('order')->group(function () {
+    Route::post('/create', [CreateOrderController::class, 'create']);
 });

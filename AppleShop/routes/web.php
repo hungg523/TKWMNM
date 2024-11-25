@@ -24,6 +24,8 @@ use App\Http\Controllers\Users\ResentOtpUserController;
 use App\Http\Controllers\Users\LoginUserController;
 use App\Http\Controllers\Users\GetAllUserController;
 use App\Http\Controllers\Users\GetByIdUserController;
+//Order
+use App\Http\Controllers\Order\CreateOrderController;
 
 
 Route::prefix('product')->group(function () {
@@ -56,4 +58,8 @@ Route::prefix('user')->group(function () {
     Route::get('/get-all', [GetAllUserController::class, 'index']);
     Route::post('/login', [LoginUserController::class, 'login']);
     Route::get('/get-by-id/{id}', [GetByIdUserController::class, 'show']);
+});
+
+Route::prefix('order')->group(function () {
+    Route::post('/create', [CreateOrderController::class, 'create']);
 });
