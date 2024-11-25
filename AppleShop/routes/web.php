@@ -32,6 +32,8 @@ use App\Http\Controllers\UsersAddress\UpdateUserAddressController;
 use App\Http\Controllers\UsersAddress\GetAllUserAddressController;
 use App\Http\Controllers\UsersAddress\GetByIdUserAddressController;
 use App\Http\Controllers\UsersAddress\GetCustomerAddressByCustomerId;
+//
+use App\Http\Controllers\Order\CreateOrderController;
 
 
 
@@ -77,4 +79,8 @@ Route::prefix('useraddress')->group(function () {
     Route::get('/get-all', [GetAllUserAddressController::class, 'index']);
     Route::get('/get-address-by-customer-id/{id}', [GetCustomerAddressByCustomerId::class, 'getcustomer']);
     Route::get('/get-by-id/{id}', [GetByIdUserAddressController::class, 'show']);
+});
+
+Route::prefix('order')->group(function () {
+    Route::post('/create', [CreateOrderController::class, 'create']);
 });

@@ -32,7 +32,8 @@ use App\Http\Controllers\UsersAddress\UpdateUserAddressController;
 use App\Http\Controllers\UsersAddress\GetAllUserAddressController;
 use App\Http\Controllers\UsersAddress\GetByIdUserAddressController;
 use App\Http\Controllers\UsersAddress\GetCustomerAddressByCustomerId;
-
+//
+use App\Http\Controllers\Order\CreateOrderController;
 
 
 Route::prefix('product')->group(function () {
