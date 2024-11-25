@@ -47,5 +47,8 @@ class VerifyCsrfToken extends Middleware
         '/useraddress/update/*',
         '/useraddress/get-by-id/*',
         '/useraddress/get-address-by-customer-id/*',
+
+        //Order
+        '/order/create',
     ];
 }

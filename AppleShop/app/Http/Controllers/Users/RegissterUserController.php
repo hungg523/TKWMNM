@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use App\Services\FileService;
-use App\Constants\AssetType\AssetType;
+use App\Enums\AssetType;
 
 class RegissterUserController extends Controller
 {
@@ -55,7 +55,7 @@ class RegissterUserController extends Controller
                     $fileName = substr((string) Str::uuid(), 0, 4) . $newFileExtension;
                 }
 
-                $filePath = $this->fileService->uploadFile($fileName, $request['imageData'], AssetType::USER_IMG);
+                $filePath = $this->fileService->uploadFile($fileName, $request['imageData'], AssetType::USER_IMG -> value);
             }
             $otp = strtoupper(Str::random(6));
             $username = "user_".str::random(10);
@@ -64,7 +64,7 @@ class RegissterUserController extends Controller
                 $user->{UserConstant::USER_USERNAME} = $username;
                 $user->{UserConstant::USER_PASSWORD} = bcrypt($request->input(UserConstant::USER_PASSWORD));
                 $user->{UserConstant::OTP} = $otp;
-                $user->{UserConstant::USER_IMG_AVATAR} = $filePath;
+                $user->{UserConstant::USER_IMG_AVATAR} = $filePath ?? null;
                 $user->{UserConstant::OTP_EXPIRATION} = now()->addSeconds(5);
                 $user->save();
             } else {
@@ -73,7 +73,7 @@ class RegissterUserController extends Controller
                 $user->{UserConstant::USER_EMAIL} = $request->input(UserConstant::USER_EMAIL);
                 $user->{UserConstant::USER_PASSWORD} = bcrypt($request->input(UserConstant::USER_PASSWORD));
                 $user->{UserConstant::OTP} = $otp;
-                $user->{UserConstant::USER_IMG_AVATAR} = $filePath;
+                $user->{UserConstant::USER_IMG_AVATAR} = $filePath ?? null;
                 $user->{UserConstant::OTP_EXPIRATION} = now()->addSeconds(90);
                 $user->{UserConstant::USER_ROLES} = 0;
                 $user->{UserConstant::USER_IS_ACTIVED} = false;

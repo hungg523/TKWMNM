@@ -18,10 +18,13 @@ class UpdateCouponController extends Controller
         try {
             // Validate the request
             $validator = Validator::make($request->all(), [
-                CouponConstant::COUPON_CODE => 'required|string|max:255',
-                CouponConstant::COUPON_DESCRIPTION => 'nullable|string',
-                CouponConstant::COUPON_START_DATE => 'required|date',
-                CouponConstant::COUPON_END_DATE => 'required|date',
+                CouponConstant::COUPON_CODE => 'sometimes|required|string|max:255',
+                CouponConstant::COUPON_DESCRIPTION => 'sometimes|nullable|string',
+                CouponConstant::DISCOUNT_PERCENT => 'sometimes|required|numeric|between:1,100',
+                CouponConstant::IS_ACTIVED => 'sometimes|required|numeric|min:0',
+                CouponConstant::TIMES_AVAILABLE => 'sometimes|required|numeric|min:0',
+                CouponConstant::COUPON_START_DATE => 'sometimes|required|date',
+                CouponConstant::COUPON_END_DATE => 'sometimes|required|date',
             ]);
 
             if ($validator->fails()) {
@@ -36,6 +39,9 @@ class UpdateCouponController extends Controller
 
             $coupon->{CouponConstant::COUPON_CODE} = $request->input(CouponConstant::COUPON_CODE) ?? $coupon->{CouponConstant::COUPON_CODE};
             $coupon->{CouponConstant::COUPON_DESCRIPTION} = $request->input(CouponConstant::COUPON_DESCRIPTION) ?? $coupon->{CouponConstant::COUPON_DESCRIPTION};
+            $coupon->{CouponConstant::DISCOUNT_PERCENT} = $request->input(CouponConstant::DISCOUNT_PERCENT) ?? $coupon->input(CouponConstant::DISCOUNT_PERCENT);
+            $coupon->{CouponConstant::IS_ACTIVED} = $request->input(CouponConstant::IS_ACTIVED) ?? $coupon->input(CouponConstant::IS_ACTIVED);
+            $coupon->{CouponConstant::TIMES_AVAILABLE} = $request->input(CouponConstant::TIMES_AVAILABLE) ?? $coupon->input(CouponConstant::TIMES_AVAILABLE);
             $coupon->{CouponConstant::COUPON_START_DATE} = $request->input(CouponConstant::COUPON_START_DATE) ?? $coupon->{CouponConstant::COUPON_START_DATE};
             $coupon->{CouponConstant::COUPON_END_DATE} = $request->input(CouponConstant::COUPON_END_DATE) ?? $coupon->{CouponConstant::COUPON_END_DATE};
 
