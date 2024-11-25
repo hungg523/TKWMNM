@@ -9,7 +9,6 @@ use Exception;
 class FileService
 {
     protected $assetServerUrl;
-
     public function __construct()
     {
         // Đọc URL của asset server từ file cấu hình .env hoặc config
