@@ -18,6 +18,9 @@ class Coupon extends Model
     protected $fillable = [
         CouponConstant::COUPON_ID,
         CouponConstant::COUPON_CODE,
+        CouponConstant::DISCOUNT_PERCENT,
+        CouponConstant::IS_ACTIVED,
+        CouponConstant::TIMES_AVAILABLE,
         CouponConstant::COUPON_DESCRIPTION,
         CouponConstant::COUPON_START_DATE,
         CouponConstant::COUPON_END_DATE,

@@ -24,6 +24,8 @@ class OrderItem extends Model
         OrderItemConstant::TOTAL
     ];
 
+    public $timestamps = false;
+
     public function order()
     {
         return $this->belongsTo(Order::class);

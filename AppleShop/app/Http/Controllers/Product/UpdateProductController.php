@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 
 use App\Constants\Product\ProductConstant;
 use App\Models\Product;
-use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -51,18 +50,6 @@ class UpdateProductController extends Controller
 
             // Save product to the database
             $product->save();
-
-            if ($request->has(ProductConstant::CATEGORY_ID)) {
-                // Handle product categories
-                ProductCategory::where('product_id', $product->id)->delete();
-                $categoryIds = collect($request->{ProductConstant::CATEGORY_ID})->unique();
-                foreach ($categoryIds as $categoryId) {
-                    ProductCategory::create([
-                        'product_id' => $product->id,
-                        'category_id' => $categoryId,
-                    ]);
-                }
-            }
 
             DB::commit();
 
