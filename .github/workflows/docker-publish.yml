@@ -63,9 +63,9 @@ jobs:
           milestone: 1
           draft: false
       
-      - name: Debug Pull Request Outputs
-        run: |
-          echo "Pull Request Number: "${{ steps.cpr.outputs.pull-request-number }}"
+      # - name: Debug Pull Request Outputs
+      #   run: |
+      #     echo "Pull Request Number: "${{ steps.cpr.outputs.pull-request-number }}"
       
       - name: Auto-merge Pull Request
         uses: actions/github-script@v7
