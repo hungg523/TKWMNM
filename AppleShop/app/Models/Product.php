@@ -25,7 +25,5 @@ class Product extends Model
         ProductConstant::PRODUCT_DETAIL,
         ProductConstant::CATEGORY_ID,
     ];
-
-    // Để Laravel tự động quản lý created_at và updated_at
     public $timestamps = false;
 }

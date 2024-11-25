@@ -39,5 +39,13 @@ class VerifyCsrfToken extends Middleware
         '/user/vertify-otp',
         '/user/resend-otp',
         '/user/login',
+        '/user/change-password',
+        '/user/update-password',
+
+        //UserAddress
+        '/useraddress/create',
+        '/useraddress/update/*',
+        '/useraddress/get-by-id/*',
+        '/useraddress/get-address-by-customer-id/*',
     ];
 }

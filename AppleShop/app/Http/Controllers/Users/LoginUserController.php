@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
+use App\Constants\Users\UserConstant;
 
 class LoginUserController extends Controller
 {
@@ -18,8 +19,8 @@ class LoginUserController extends Controller
         try {
             // Validate request
             $validator = Validator::make($request->all(), [
-                'email' => 'required|email',
-                'password' => 'required|string'
+                UserConstant::USER_EMAIL => 'required|email',
+                UserConstant::USER_PASSWORD => 'required|string',
             ]);
 
             if ($validator->fails()) {
@@ -37,7 +38,7 @@ class LoginUserController extends Controller
             }
 
             if (!Hash::check($request->input('password'), $customer->password)) {
-                return response()->json(['error' => 'Invalid credentials.'], Response::HTTP_UNAUTHORIZED);
+                return response()->json(['error' => 'Wrong Password.'], Response::HTTP_UNAUTHORIZED);
             }
 
             DB::commit();

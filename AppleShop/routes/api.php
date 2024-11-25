@@ -24,6 +24,15 @@ use App\Http\Controllers\Users\ResentOtpUserController;
 use App\Http\Controllers\Users\LoginUserController;
 use App\Http\Controllers\Users\GetAllUserController;
 use App\Http\Controllers\Users\GetByIdUserController;
+use App\Http\Controllers\Users\ChangePasswordController;
+use App\Http\Controllers\Users\UpdateUserPasswordController;
+//UserAddress
+use App\Http\Controllers\UsersAddress\CreateUserAddressController;
+use App\Http\Controllers\UsersAddress\UpdateUserAddressController;
+use App\Http\Controllers\UsersAddress\GetAllUserAddressController;
+use App\Http\Controllers\UsersAddress\GetByIdUserAddressController;
+use App\Http\Controllers\UsersAddress\GetCustomerAddressByCustomerId;
+
 
 
 Route::prefix('product')->group(function () {
@@ -56,4 +65,16 @@ Route::prefix('user')->group(function () {
    Route::get('/get-all', [GetAllUserController::class, 'index']);
    Route::post('/login', [LoginUserController::class, 'login']);
    Route::get('/get-by-id/{id}', [GetByIdUserController::class, 'show']);
+   Route::post('/change-password', [ChangePasswordController::class, 'changePassword']);
+   Route::put('/update-password', [UpdateUserPasswordController::class, 'updatePassword']);
+
+});
+
+Route::prefix('useraddress')->group(function () {
+   Route::post('/create', [CreateUserAddressController::class, 'store']);
+   //Route::post('/register', [RegissterUserController::class, 'register']);
+   Route::put('/update/{id}', [UpdateUserAddressController::class, 'update']);
+   Route::get('/get-all', [GetAllUserAddressController::class, 'index']);
+   Route::get('/get-address-by-customer-id/{id}', [GetCustomerAddressByCustomerId::class, 'getcustomer']);
+   Route::get('/get-by-id/{id}', [GetByIdUserAddressController::class, 'show']);
 });

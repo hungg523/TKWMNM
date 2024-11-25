@@ -57,7 +57,6 @@ class RegissterUserController extends Controller
 
                 $filePath = $this->fileService->uploadFile($fileName, $request['imageData'], AssetType::USER_IMG);
             }
-            dd($newFileExtension, $currentFileName, $currentFileExtension, $fileName);
             $otp = strtoupper(Str::random(6));
             $username = "user_".str::random(10);
 
