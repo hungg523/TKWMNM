@@ -39,34 +39,6 @@ jobs:
             automated pr
           milestone: 1
           draft: false
-      
-      # - name: Auto-merge Pull Request
-      #   uses: actions/github-script@v7
-      #   with:
-      #     github-token: ${{ secrets.PAT }}
-      #     script: |
-      #       const prNumber = parseInt("${{ steps.cpr.outputs.pull-request-number }}");
-      #       if (prNumber) {
-      #         const pr = await github.rest.pulls.get({
-      #           owner: context.repo.owner,
-      #           repo: context.repo.repo,
-      #           pull_number: prNumber,
-      #         });
-
-      #         if (pr && pr.data.state === "open") {
-      #           await github.rest.pulls.merge({
-      #             owner: context.repo.owner,
-      #             repo: context.repo.repo,
-      #             pull_number: prNumber,
-      #             merge_method: "merge",
-      #           });
-      #           console.log(`Pull Request #${prNumber} merged successfully.`);
-      #         } else {
-      #           console.log(`Pull Request #${prNumber} is not open.`);
-      #         }
-      #       } else {
-      #         throw new Error('Pull Request number is not valid.');
-      #       }
 
   build-and-push:
     runs-on: ubuntu-latest
@@ -97,7 +69,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-docker-${{ github.sha }}
+          key: ${{ runner.os }}-docker-${{ github.ref_name }}
           restore-keys: |
             ${{ runner.os }}-docker-
 
