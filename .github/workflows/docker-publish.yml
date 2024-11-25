@@ -58,6 +58,7 @@ jobs:
       # Step 2: Create Pull Request from sub to main
       - name: Create Pull Request
         if: steps.pr_exists.outputs.exists == 'false'
+        id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.PAT }}
