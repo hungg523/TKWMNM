@@ -12,28 +12,28 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - name: Set Git User
-        run: |
-          git config --global user.name "hungg523"
-          git config --global user.email "hoanghung52304@gmail.com"
+      # - name: Set Git User
+      #   run: |
+      #     git config --global user.name "hungg523"
+      #     git config --global user.email "hoanghung52304@gmail.com"
 
       # Step 1: Checkout repository to work with sub branch
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Make changes to pull request
-        run: date +%s > report.txt
+      # - name: Make changes to pull request
+      #   run: date +%s > report.txt
 
-      - name: Check if report.txt has changes
-        id: changes_check
-        run: |
-          git fetch origin main
-          if git diff --quiet origin/main -- report.txt; then
-            echo "No changes to be pulled. Exiting."
-            exit 0
-          else
-            echo "Changes detected. Proceeding with PR creation."
-          fi
+      # - name: Check if report.txt has changes
+      #   id: changes_check
+      #   run: |
+      #     git fetch origin main
+      #     if git diff --quiet origin/main -- report.txt; then
+      #       echo "No changes to be pulled. Exiting."
+      #       exit 0
+      #     else
+      #       echo "Changes detected. Proceeding with PR creation."
+      #     fi
 
       - name: Check if Pull Request Exists
         id: pr_exists
@@ -156,6 +156,10 @@ jobs:
           context: ./AppleShop
           push: true
           tags: lolmobi495/doan:appleshop
+      
+      # Prune Docker builder cache
+      - name: Prune Docker builder cache
+        run: docker builder prune -f
 
       # Prune unused Docker images
       - name: Remove unused Docker images
