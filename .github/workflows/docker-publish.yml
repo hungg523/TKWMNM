@@ -21,44 +21,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # - name: Make changes to pull request
-      #   run: date +%s > report.txt
-
-      # - name: Check if report.txt has changes
-      #   id: changes_check
-      #   run: |
-      #     git fetch origin main
-      #     if git diff --quiet origin/main -- report.txt; then
-      #       echo "No changes to be pulled. Exiting."
-      #       exit 0
-      #     else
-      #       echo "Changes detected. Proceeding with PR creation."
-      #     fi
-
-      - name: Check if Pull Request Exists
-        id: pr_exists
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.PAT }}
-          script: |
-            const { data: pulls } = await github.rest.pulls.list({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              head: `${context.repo.owner}:sub`,
-              base: 'main',
-              state: 'open',
-            });
-            if (pulls.length > 0) {
-              core.setOutput('exists', 'true');
-              core.setOutput('pr_number', pulls[0].number);
-            } else {
-              core.setOutput('exists', 'false');
-            }
-          result-encoding: string
-
       # Step 2: Create Pull Request from sub to main
       - name: Create Pull Request
-        if: steps.pr_exists.outputs.exists == 'false'
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
@@ -86,7 +50,7 @@ jobs:
         with:
           github-token: ${{ secrets.PAT }}
           script: |
-            const prNumber = parseInt("${{ steps.cpr.outputs['pull-request-number'] }}");
+            const prNumber = parseInt("${{ steps.cpr.outputs.pull-request-number }}");
             if (prNumber) {
               const pr = await github.rest.pulls.get({
                 owner: context.repo.owner,
