@@ -26,6 +26,10 @@ use App\Http\Controllers\Users\GetAllUserController;
 use App\Http\Controllers\Users\GetByIdUserController;
 use App\Http\Controllers\Users\ChangePasswordController;
 use App\Http\Controllers\Users\UpdateUserPasswordController;
+use App\Http\Controllers\Users\GetByEmailUserController;
+use App\Http\Controllers\Users\UpdateUserProfileController;
+
+
 //UserAddress
 use App\Http\Controllers\UsersAddress\CreateUserAddressController;
 use App\Http\Controllers\UsersAddress\UpdateUserAddressController;
@@ -60,24 +64,27 @@ Route::prefix('category')->group(function () {
 });
 
 Route::prefix('user')->group(function () {
-   Route::post('/resend-otp', [ResentOtpUserController::class, 'resendOtp']);
-   Route::post('/register', [RegissterUserController::class, 'register']);
-   Route::put('/vertify-otp', [AuthenUserController::class, 'authen']);
-   Route::get('/get-all', [GetAllUserController::class, 'index']);
-   Route::post('/login', [LoginUserController::class, 'login']);
-   Route::get('/get-by-id/{id}', [GetByIdUserController::class, 'show']);
-   Route::post('/change-password', [ChangePasswordController::class, 'changePassword']);
-   Route::put('/update-password', [UpdateUserPasswordController::class, 'updatePassword']);
+    Route::post('/resend-otp', [ResentOtpUserController::class, 'resendOtp']);
+    Route::post('/register', [RegissterUserController::class, 'register']);
+    Route::put('/vertify-otp', [AuthenUserController::class, 'authen']);
+    Route::get('/get-all', [GetAllUserController::class, 'index']);
+    Route::post('/login', [LoginUserController::class, 'login']);
+    Route::get('/get-by-id/{id}', [GetByIdUserController::class, 'show']);
+    Route::post('/change-password', [ChangePasswordController::class, 'changePassword']);
+    Route::put('/update-password', [UpdateUserPasswordController::class, 'updatePassword']);
+    Route::get('/get-by-email', [GetByEmailUserController::class, 'getbyemail']);
+    Route::put('/update-profile/{id}', [UpdateUserProfileController::class, 'updateprofile']);
+
 
 });
 
 Route::prefix('useraddress')->group(function () {
-   Route::post('/create', [CreateUserAddressController::class, 'store']);
-   //Route::post('/register', [RegissterUserController::class, 'register']);
-   Route::put('/update/{id}', [UpdateUserAddressController::class, 'update']);
-   Route::get('/get-all', [GetAllUserAddressController::class, 'index']);
-   Route::get('/get-address-by-customer-id/{id}', [GetCustomerAddressByCustomerId::class, 'getcustomer']);
-   Route::get('/get-by-id/{id}', [GetByIdUserAddressController::class, 'show']);
+    Route::post('/create', [CreateUserAddressController::class, 'store']);
+    //Route::post('/register', [RegissterUserController::class, 'register']);
+    Route::put('/update/{id}', [UpdateUserAddressController::class, 'update']);
+    Route::get('/get-all', [GetAllUserAddressController::class, 'index']);
+    Route::get('/get-address-by-customer-id/{id}', [GetCustomerAddressByCustomerId::class, 'getcustomer']);
+    Route::get('/get-by-id/{id}', [GetByIdUserAddressController::class, 'show']);
 });
 
 Route::prefix('order')->group(function () {

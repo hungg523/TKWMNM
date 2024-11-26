@@ -26,6 +26,10 @@ use App\Http\Controllers\Users\GetAllUserController;
 use App\Http\Controllers\Users\GetByIdUserController;
 use App\Http\Controllers\Users\ChangePasswordController;
 use App\Http\Controllers\Users\UpdateUserPasswordController;
+use App\Http\Controllers\Users\GetByEmailUserController;
+use App\Http\Controllers\Users\UpdateUserProfileController;
+
+
 //UserAddress
 use App\Http\Controllers\UsersAddress\CreateUserAddressController;
 use App\Http\Controllers\UsersAddress\UpdateUserAddressController;
@@ -34,7 +38,6 @@ use App\Http\Controllers\UsersAddress\GetByIdUserAddressController;
 use App\Http\Controllers\UsersAddress\GetCustomerAddressByCustomerId;
 //
 use App\Http\Controllers\Order\CreateOrderController;
-
 
 
 Route::prefix('product')->group(function () {
@@ -69,6 +72,8 @@ Route::prefix('user')->group(function () {
     Route::get('/get-by-id/{id}', [GetByIdUserController::class, 'show']);
     Route::post('/change-password', [ChangePasswordController::class, 'changePassword']);
     Route::put('/update-password', [UpdateUserPasswordController::class, 'updatePassword']);
+    Route::get('/get-by-email', [GetByEmailUserController::class, 'getbyemail']);
+    Route::put('/update-profile/{id}', [UpdateUserProfileController::class, 'updateprofile']);
 
 });
 
