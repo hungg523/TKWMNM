@@ -22,20 +22,21 @@ class GetOrderByIdController extends Controller
             'total_amount' => $order->total_amount,
             'address' => $order->user_address ? [
                 'id' => $order->user_address->user_address_id,
-                //'address' => $order->user_address->address,
-                //'full_name' => $order->user_address->full_name,
+                'full_name' => $order->user_address->full_name,
                 'phone' => $order->user_address->tel,
-                'final_address' => "{$order->user_address->ward}, {$order->user_address->district}, {$order->user_address->province}",
+                'final_address' => "{$order->user_address->address}, {$order->user_address->ward}, {$order->user_address->district}, {$order->user_address->province}",
             ] : null,
             'coupon' => $order->coupon ? [
                 'id' => $order->coupon->coupon_id,
                 'description' => $order->coupon->description,
-                'discount' => $order->coupon->discount_percent,
+                'discount_percent' => $order->coupon->discount_percent."%",
             ] : null,
             'order_items' => $order->items->map(function ($item) {
                 return [
                     'product_id' => $item->product_id,
                     'quantity' => $item->quantity,
+                    'unit_price' => $item->unit_price,
+                    'total_price' => $item->quantity * $item->unit_price,
                 ];
             })->toArray()
         ];

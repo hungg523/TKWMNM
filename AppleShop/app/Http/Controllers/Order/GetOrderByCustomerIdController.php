@@ -12,8 +12,8 @@ class GetOrderByCustomerIdController extends Controller
     {
         // Eager Loading các quan hệ để tránh N+1 query problem
         $orders = Order::with(['items', 'user_address', 'coupon', 'user'])
-                    ->where('user_id', $customerId)
-                    ->get();
+            ->where('user_id', $customerId)
+            ->get();
 
         // Nếu không tìm thấy đơn hàng
         if ($orders->isEmpty()) {
@@ -23,29 +23,27 @@ class GetOrderByCustomerIdController extends Controller
         // Chuyển đổi dữ liệu đơn hàng sang DTO
         $orderDtos = $orders->map(function ($order) {
             return [
-                'id' => $order->id,
-                'email' => $order->customer ? $order->customer->email : null,
+                'id' => $order->order_id,
+                'email' => $order->user ? $order->user->email : null,
                 'status' => $order->status,
-                'total_price' => $order->total_price,
-                'coupon' => $order->coupon ? [
-                    'id' => $order->coupon->id,
-                    'description' => $order->coupon->description,
-                    'discount' => $order->coupon->discount,
+                'total_amount' => $order->total_amount,
+                'address' => $order->user_address ? [
+                    'id' => $order->user_address->user_address_id,
+                    'full_name' => $order->user_address->full_name,
+                    'phone' => $order->user_address->tel,
+                    'final_address' => "{$order->user_address->address}, {$order->user_address->ward}, {$order->user_address->district}, {$order->user_address->province}",
                 ] : null,
-                'address' => $order->customerAddress ? [
-                    'id' => $order->customerAddress->id,
-                    'address' => $order->customerAddress->address,
-                    'full_name' => $order->customerAddress->full_name,
-                    'phone' => $order->customerAddress->phone,
-                    'province' => $order->customerAddress->province,
-                    'district' => $order->customerAddress->district,
-                    'ward' => $order->customerAddress->ward,
-                    'final_address' => "{$order->customerAddress->address}, {$order->customerAddress->ward}, {$order->customerAddress->district}, {$order->customerAddress->province}",
+                'coupon' => $order->coupon ? [
+                    'id' => $order->coupon->coupon_id,
+                    'description' => $order->coupon->description,
+                    'discount_percent' => $order->coupon->discount_percent . "%",
                 ] : null,
                 'order_items' => $order->items->map(function ($item) {
                     return [
                         'product_id' => $item->product_id,
                         'quantity' => $item->quantity,
+                        'unit_price' => $item->unit_price,
+                        'total_price' => $item->quantity * $item->unit_price,
                     ];
                 })->toArray()
             ];
