@@ -24,6 +24,8 @@ class UserAddress extends Model
         UsersAddressConstant::PROVINCE,
         UsersAddressConstant::TEL,
         UsersAddressConstant::IS_ACTIVED,
+        UsersAddressConstant::FULL_NAME,
+        UsersAddressConstant::ADDRESS
     ];
     public $timestamps = false;
 }

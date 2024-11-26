@@ -28,6 +28,8 @@ class CreateUserAddressController extends Controller
             UsersAddressConstant::PROVINCE => 'required|string|max:255',
             UsersAddressConstant::TEL => 'required|string|max:20',
             UsersAddressConstant::IS_ACTIVED => 'required|boolean',
+            UsersAddressConstant::FULL_NAME => 'required|string',
+            UsersAddressConstant::ADDRESS => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -48,6 +50,8 @@ class CreateUserAddressController extends Controller
             $customerAddress->province = $request->input('province');
             $customerAddress->tel = $request->input('tel');
             $customerAddress->is_actived = $request->input('is_actived');
+            $customerAddress->full_name = $request->input(UsersAddressConstant::FULL_NAME);
+            $customerAddress->address = $request->input(UsersAddressConstant::ADDRESS);
             $customerAddress->save();
 
             // Commit Transaction

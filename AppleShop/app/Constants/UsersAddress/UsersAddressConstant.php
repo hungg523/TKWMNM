@@ -11,4 +11,6 @@ class UsersAddressConstant
     public const PROVINCE = "province";
     public const TEL = "tel";
     public const IS_ACTIVED = "is_actived";
+    public const FULL_NAME = "full_name";
+    public const ADDRESS = "address";
 }

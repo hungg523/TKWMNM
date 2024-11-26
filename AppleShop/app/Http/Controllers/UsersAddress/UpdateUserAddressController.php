@@ -21,6 +21,8 @@ class UpdateUserAddressController extends Controller
             UsersAddressConstant::PROVINCE => 'required|string|max:255',
             UsersAddressConstant::TEL => 'required|string|max:20',
             UsersAddressConstant::IS_ACTIVED => 'required|boolean',
+            UsersAddressConstant::FULL_NAME => 'required|string',
+            UsersAddressConstant::ADDRESS => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -47,6 +49,8 @@ class UpdateUserAddressController extends Controller
             $userAddress->province = $request->input('province', $userAddress->province);
             $userAddress->tel = $request->input('tel', $userAddress->tel);
             $userAddress->is_actived = $request->input('is_actived', $userAddress->is_actived);
+            $userAddress->full_name = $request->input('full_name', $userAddress->full_name);
+            $userAddress->address = $request->input('address', $userAddress->address);
 
             // Save changes
             $userAddress->save();
