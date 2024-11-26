@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Constants\Order\OrderConstant;
+use App\Constants\UsersAddress\UsersAddressConstant;
+use App\Constants\Coupon\CouponConstant;
+use App\Constants\Users\UserConstant;
 
 class Order extends Model
 {
@@ -32,6 +35,21 @@ class Order extends Model
 
     public function items()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(OrderItem::class, OrderConstant::ORDER_ID);
+    }
+
+    public function user_address()
+    {
+        return $this->belongsTo(UserAddress::class, UsersAddressConstant::USER_ADDRESS_ID,);
+    }
+
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class, CouponConstant::COUPON_ID);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(Users::class, UserConstant::USER_ID);
     }
 }
