@@ -33,7 +33,6 @@ class RegissterUserController extends Controller
             $validator = Validator::make($request->all(), [
                 UserConstant::USER_EMAIL => 'required|email',
                 UserConstant::USER_PASSWORD => 'required|string',
-                'imageData' => 'required',
             ]);
 
             if ($validator->fails()) {
