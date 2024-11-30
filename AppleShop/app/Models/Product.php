@@ -28,4 +28,9 @@ class Product extends Model
         ProductConstant::IMG_URL,
     ];
     public $timestamps = false;
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class, ProductConstant::PRODUCT_ID);
+    }
 }

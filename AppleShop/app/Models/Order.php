@@ -15,6 +15,7 @@ class Order extends Model
 
     protected $table = 'orders';
     protected $primaryKey = OrderConstant::ORDER_ID;
+    
 
     protected $keyType = 'int';
 

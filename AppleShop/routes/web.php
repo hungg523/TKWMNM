@@ -12,6 +12,9 @@ use App\Http\Controllers\Product\UpdateProductController;
 use App\Http\Controllers\Product\GetAllProductController;
 use App\Http\Controllers\Product\GetByIdProductController;
 use App\Http\Controllers\Product\GetByNameProductController;
+use App\Http\Controllers\Product\GetAllsProductController;
+use App\Http\Controllers\Product\GetProductDeatilController;
+
 //Coupon
 use App\Http\Controllers\Coupon\CreateCouponController;
 use App\Http\Controllers\Coupon\UpdateCouponController;
@@ -46,12 +49,15 @@ use App\Http\Controllers\Order\GetOrderByIdController;
 use App\Http\Controllers\Order\GetOrderItemByOrderId;
 
 
+
 Route::prefix('product')->group(function () {
     Route::get('/get-all', [GetAllProductController::class, 'index']);
     Route::post('/create', [CreateProductController::class, 'store']);
     Route::put('/update/{id}', [UpdateProductController::class, 'update']);
     Route::get('/get-by-name', [GetByNameProductController::class, 'getbyname']);
     Route::get('/get-by-id/{id}', [GetByIdProductController::class, 'show']);
+    Route::get('/get-alls', [GetAllsProductController::class, 'getAllsProducts']);
+    Route::get('/get-detail/{id}', [GetProductDeatilController::class, 'getProductDetail']);
 });
 
 Route::prefix('coupon')->group(function () {
@@ -80,7 +86,6 @@ Route::prefix('user')->group(function () {
     Route::put('/update-password', [UpdateUserPasswordController::class, 'updatePassword']);
     Route::get('/get-by-email', [GetByEmailUserController::class, 'getbyemail']);
     Route::put('/update-profile/{id}', [UpdateUserProfileController::class, 'updateprofile']);
-
 });
 
 Route::prefix('useraddress')->group(function () {
