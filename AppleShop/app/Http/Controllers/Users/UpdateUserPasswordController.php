@@ -9,15 +9,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Response;
+use App\Constants\Users\UserConstant;
 class UpdateUserPasswordController extends Controller
 {
     public function updatePassword(Request $request)
     {
         // Validation
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|exists:users,email',
-            'otp' => 'required|string',
-            'password' => 'string',
+            UserConstant::USER_EMAIL => 'required|email|exists:users,email',
+            UserConstant::OTP => 'required|string',
+            UserConstant::USER_PASSWORD => 'string',
             'confirm_password' => 'required|string|same:password'
         ]);
 
@@ -32,8 +33,8 @@ class UpdateUserPasswordController extends Controller
         DB::beginTransaction();
         try {
             // Find the customer by email and OTP
-            $customer = Users::where('email', $request->input('email'))
-                ->where('otp', $request->input('otp'))
+            $customer = Users::where(UserConstant::USER_EMAIL , $request->input(UserConstant::USER_EMAIL ))
+                ->where(UserConstant::OTP, $request->input(UserConstant::OTP))
                 ->first();
 
             if (!$customer) {

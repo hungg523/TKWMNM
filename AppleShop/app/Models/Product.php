@@ -16,14 +16,16 @@ class Product extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
+        ProductConstant::PRODUCT_ID,
         ProductConstant::PRODUCT_NAME,
         ProductConstant::PRODUCT_DESCRIPTION,
         ProductConstant::PRODUCT_PRICE,
         ProductConstant::PRODUCT_DISCOUNT,
         ProductConstant::PRODUCT_QUANTITY,
         ProductConstant::IS_ACTIVED,
-        ProductConstant::PRODUCT_DETAIL,
+        ProductConstant::PRODUCT_COLOR,
         ProductConstant::CATEGORY_ID,
+        ProductConstant::IMG_URL,
     ];
     public $timestamps = false;
 }

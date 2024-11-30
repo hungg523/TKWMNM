@@ -33,9 +33,9 @@ class RegissterUserController extends Controller
             $validator = Validator::make($request->all(), [
                 UserConstant::USER_EMAIL => 'required|email',
                 UserConstant::USER_PASSWORD => 'required|string',
-                'imageData'
+                'imageData' => 'required',
             ]);
-            
+
             if ($validator->fails()) {
                 return response()->json(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
             }
@@ -49,16 +49,16 @@ class RegissterUserController extends Controller
                 $currentFileName = !empty($user->{UserConstant::USER_IMG_AVATAR}) ? basename($user->{UserConstant::USER_IMG_AVATAR}) : null;
                 $currentFileExtension = $currentFileName ? strtolower(pathinfo($currentFileName, PATHINFO_EXTENSION)) : null;
 
-                if ($currentFileName && ".".$currentFileExtension === $newFileExtension) {
+                if ($currentFileName && "." . $currentFileExtension === $newFileExtension) {
                     $fileName = $currentFileName;
                 } else {
                     $fileName = substr((string) Str::uuid(), 0, 4) . $newFileExtension;
                 }
 
-                $filePath = $this->fileService->uploadFile($fileName, $request['imageData'], AssetType::USER_IMG -> value);
+                $filePath = $this->fileService->uploadFile($fileName, $request['imageData'], AssetType::USER_IMG->value);
             }
             $otp = strtoupper(Str::random(6));
-            $username = "user_".str::random(10);
+            $username = "HHT_" . str::random(10);
 
             if ($user) {
                 $user->{UserConstant::USER_USERNAME} = $username;
