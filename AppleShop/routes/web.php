@@ -36,8 +36,14 @@ use App\Http\Controllers\UsersAddress\UpdateUserAddressController;
 use App\Http\Controllers\UsersAddress\GetAllUserAddressController;
 use App\Http\Controllers\UsersAddress\GetByIdUserAddressController;
 use App\Http\Controllers\UsersAddress\GetCustomerAddressByCustomerId;
-//
+// Order
 use App\Http\Controllers\Order\CreateOrderController;
+use App\Http\Controllers\Order\ChangeStatusController;
+use App\Http\Controllers\Order\GetAllOrderController;
+use App\Http\Controllers\Order\GetOrderByCustomerIdController;
+use App\Http\Controllers\Order\GetOrderByIdController;
+//Order-Items
+use App\Http\Controllers\Order\GetOrderItemByOrderId;
 
 
 Route::prefix('product')->group(function () {
@@ -88,4 +94,12 @@ Route::prefix('useraddress')->group(function () {
 
 Route::prefix('order')->group(function () {
     Route::post('/create', [CreateOrderController::class, 'create']);
+    Route::put('/change-status', [ChangeStatusController::class, 'changestatus']);
+    Route::get('/get-all', [GetAllOrderController::class, 'index']);
+    Route::get('/get-by-customer-id/{id}', [GetOrderByCustomerIdController::class, 'getordersbycustomerid']);
+    Route::get('/get-by-id/{id}', [GetOrderByIdController::class, 'getorderbyid']);
+});
+
+Route::prefix('order-item')->group(function () {
+    Route::get('/get-by-order-id/{id}', [GetOrderItemByOrderId::class, 'getorderitemsbyorderid']);
 });
