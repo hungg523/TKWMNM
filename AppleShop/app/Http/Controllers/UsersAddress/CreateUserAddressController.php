@@ -44,12 +44,12 @@ class CreateUserAddressController extends Controller
         try {
             // Create new customer address
             $customerAddress = new UserAddress();
-            $customerAddress->user_id = $request->input('user_id');
-            $customerAddress->ward = $request->input('ward');
-            $customerAddress->district = $request->input('district');
-            $customerAddress->province = $request->input('province');
-            $customerAddress->tel = $request->input('tel');
-            $customerAddress->is_actived = $request->input('is_actived');
+            $customerAddress->user_id = $request->input(UsersAddressConstant::USER_ID);
+            $customerAddress->ward = $request->input(UsersAddressConstant::WARD);
+            $customerAddress->district = $request->input(UsersAddressConstant::DISTRICT);
+            $customerAddress->province = $request->input(UsersAddressConstant::PROVINCE);
+            $customerAddress->tel = $request->input(UsersAddressConstant::TEL);
+            $customerAddress->is_actived = $request->input(UsersAddressConstant::IS_ACTIVED);
             $customerAddress->full_name = $request->input(UsersAddressConstant::FULL_NAME);
             $customerAddress->address = $request->input(UsersAddressConstant::ADDRESS);
             $customerAddress->save();

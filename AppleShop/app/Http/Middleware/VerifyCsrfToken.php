@@ -15,6 +15,8 @@ class VerifyCsrfToken extends Middleware
         //product
         '/product/create',
         '/get-all',
+        '/get-alls',
+        '/get-detail/*',
         '/product/update/*',
         '/product/delete/*',
         '/product/get-by-id/*',

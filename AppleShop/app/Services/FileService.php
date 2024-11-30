@@ -39,6 +39,12 @@ class FileService
             //dd($response);
             // Kiểm tra nếu yêu cầu thất bại
             if ($response->failed()) {
+                $errorDetails = [
+                    'response_status' => $response->status(),
+                    'response_body' => $response->body(),
+                    'request_content' => $requestContent,
+                ];
+                Log::error("Error uploading file", $errorDetails);
                 throw new Exception("Validate Fail", 400);
             }
 
@@ -46,7 +52,14 @@ class FileService
 
             return $responseData['data'] ?? null;
         } catch (Exception $e) {
-            Log::error("Error uploading file: " . $e->getMessage());
+            $logContext = [
+                'file_name' => $fileName,
+                'asset_type' => $type,
+                'base64_length' => strlen($base64String),
+                'error_message' => $e->getMessage(),
+                'stack_trace' => $e->getTraceAsString(),
+            ];
+            Log::error("Error uploading file", $logContext);
             throw new Exception("Internal Server Error", 500);
         }
     }

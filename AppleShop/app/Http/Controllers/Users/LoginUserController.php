@@ -27,7 +27,7 @@ class LoginUserController extends Controller
                 return response()->json(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
             }
 
-            $customer = Users::where('email', $request->input('email'))->first();
+            $customer = Users::where(UserConstant::USER_EMAIL, $request->input(UserConstant::USER_EMAIL))->first();
 
             if (!$customer) {
                 return response()->json(['error' => 'Customer not found.'], Response::HTTP_NOT_FOUND);
