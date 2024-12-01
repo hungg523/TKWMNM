@@ -33,10 +33,10 @@ class FileService
                 'Content' => $this->getBase64Data($base64String),
                 'AssetType' => $type,
             ];
-
+            //dd($requestContent);
             // Gửi yêu cầu POST tới Asset Server
             $response = Http::withOptions(['verify' => false])->post($this->assetServerUrl . '/upload', $requestContent);
-
+            //dd($response);
             // Kiểm tra nếu yêu cầu thất bại
             if ($response->failed()) {
                 $errorDetails = [

@@ -33,7 +33,6 @@ class RegissterUserController extends Controller
             $validator = Validator::make($request->all(), [
                 UserConstant::USER_EMAIL => 'required|email',
                 UserConstant::USER_PASSWORD => 'required|string',
-                'imageData' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -65,7 +64,7 @@ class RegissterUserController extends Controller
                 $user->{UserConstant::USER_PASSWORD} = bcrypt($request->input(UserConstant::USER_PASSWORD));
                 $user->{UserConstant::OTP} = $otp;
                 $user->{UserConstant::USER_IMG_AVATAR} = $filePath ?? null;
-                $user->{UserConstant::OTP_EXPIRATION} = now()->addSeconds(5);
+                $user->{UserConstant::OTP_EXPIRATION} = now()->addSeconds(90);
                 $user->save();
             } else {
                 $user = new Users();
