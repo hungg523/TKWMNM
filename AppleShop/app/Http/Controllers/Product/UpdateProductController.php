@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
-
 use App\Constants\Product\ProductConstant;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -25,7 +24,6 @@ class UpdateProductController extends Controller
     {
         DB::beginTransaction();
         try {
-            // Validate the request
             $validator = Validator::make($request->all(), [
                 ProductConstant::PRODUCT_NAME => 'sometimes|required|string|max:255',
                 ProductConstant::PRODUCT_DESCRIPTION => 'nullable|string',
@@ -42,7 +40,6 @@ class UpdateProductController extends Controller
                 return response()->json(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
             }
 
-            // Find product by ID
             $product = Product::find($id);
             if (!$product) {
                 return response()->json(['error' => 'Product not found'], Response::HTTP_NOT_FOUND);
@@ -61,7 +58,6 @@ class UpdateProductController extends Controller
                 $filePath = $this->fileService->uploadFile($fileName, $request['imageData'], AssetType::PRODUCT_IMG->value);
             }
 
-            // Update product fields
             $product->{ProductConstant::PRODUCT_NAME} = $request->{ProductConstant::PRODUCT_NAME} ?? $product->{ProductConstant::PRODUCT_NAME};
             $product->{ProductConstant::PRODUCT_DESCRIPTION} = $request->{ProductConstant::PRODUCT_DESCRIPTION} ?? $product->{ProductConstant::PRODUCT_DESCRIPTION};
             $product->{ProductConstant::PRODUCT_PRICE} = $request->{ProductConstant::PRODUCT_PRICE} ?? $product->{ProductConstant::PRODUCT_PRICE};
@@ -72,7 +68,6 @@ class UpdateProductController extends Controller
             $product->{ProductConstant::CATEGORY_ID} = $request->{ProductConstant::CATEGORY_ID} ?? $product->{ProductConstant::CATEGORY_ID};
             $product->{ProductConstant::IMG_URL} = $filePath ?? null;
 
-            // Save product to the database
             $product->save();
 
             DB::commit();
