@@ -17,7 +17,6 @@ class CreateCouponController extends Controller
     {
         DB::beginTransaction();
         try {
-            // Validate the request
             $validator = Validator::make($request->all(), [
                 CouponConstant::COUPON_CODE => 'required|string|max:255',
                 CouponConstant::COUPON_DESCRIPTION => 'nullable|string',
@@ -32,7 +31,6 @@ class CreateCouponController extends Controller
                 return response()->json(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
             }
 
-            // Create coupon instance
             $coupon = new Coupon();
             $coupon->{CouponConstant::COUPON_CODE} = strtoupper($request->input(CouponConstant::COUPON_CODE));
             $coupon->{CouponConstant::COUPON_DESCRIPTION} = $request->input(CouponConstant::COUPON_DESCRIPTION);
@@ -42,7 +40,6 @@ class CreateCouponController extends Controller
             $coupon->{CouponConstant::COUPON_START_DATE} = $request->input(CouponConstant::COUPON_START_DATE);
             $coupon->{CouponConstant::COUPON_END_DATE} = $request->input(CouponConstant::COUPON_END_DATE);
 
-            // Save coupon to the database
             $coupon->save();
             DB::commit();
 
