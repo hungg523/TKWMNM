@@ -63,7 +63,7 @@ class UpdateUserProfileController extends Controller
             $user->username = $request->input(UserConstant::USER_USERNAME, $user->username);
             $user->phone_number = $request->input(UserConstant::USER_PHONE_NUMBER, $user->phone_number);
             $user->date_of_birth = $request->input(UserConstant::USER_DATE_OF_BIRTH, $user->date_of_birth);
-            $user->{UserConstant::USER_IMG_AVATAR} = $filePath ?? null;
+            $user->{UserConstant::USER_IMG_AVATAR} = $filePath ?? $user->{UserConstant::USER_IMG_AVATAR};
             // Save updated user
             $user->save();
 

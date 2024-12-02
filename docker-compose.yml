@@ -3,9 +3,6 @@ networks:
     app-network:
         driver: bridge
 
-volumes:
-    dbdata:
-
 services:
   assets-server:
     image: lolmobi495/doan:assets-server
