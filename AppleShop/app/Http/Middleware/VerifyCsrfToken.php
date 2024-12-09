@@ -21,6 +21,7 @@ class VerifyCsrfToken extends Middleware
         '/product/delete/*',
         '/product/get-by-id/*',
         '/product/get-by-name',
+        '/product/get-product-by-category/*',
 
         //coupon
         '/coupon/create',

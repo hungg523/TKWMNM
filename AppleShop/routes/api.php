@@ -14,7 +14,7 @@ use App\Http\Controllers\Product\GetByIdProductController;
 use App\Http\Controllers\Product\GetByNameProductController;
 use App\Http\Controllers\Product\GetAllsProductController;
 use App\Http\Controllers\Product\GetProductDeatilController;
-
+use App\Http\Controllers\Product\GetProductByCategoryIdController;
 //Coupon
 use App\Http\Controllers\Coupon\CreateCouponController;
 use App\Http\Controllers\Coupon\UpdateCouponController;
@@ -58,6 +58,7 @@ Route::prefix('product')->group(function () {
     Route::get('/get-by-id/{id}', [GetByIdProductController::class, 'show']);
     Route::get('/get-alls', [GetAllsProductController::class, 'getAllsProducts']);
     Route::get('/get-detail/{id}', [GetProductDeatilController::class, 'getProductDetail']);
+    Route::get('/get-product-by-category/{id}', [GetProductByCategoryIdController::class, 'getProductsByCategoryId']);
 });
 
 Route::prefix('coupon')->group(function () {

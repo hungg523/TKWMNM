@@ -66,7 +66,8 @@ class UpdateProductController extends Controller
             $product->{ProductConstant::IS_ACTIVED} = $request->{ProductConstant::IS_ACTIVED} ?? $product->{ProductConstant::IS_ACTIVED};
             $product->{ProductConstant::PRODUCT_COLOR} = $request->{ProductConstant::PRODUCT_COLOR} ?? $product->{ProductConstant::PRODUCT_COLOR};
             $product->{ProductConstant::CATEGORY_ID} = $request->{ProductConstant::CATEGORY_ID} ?? $product->{ProductConstant::CATEGORY_ID};
-            $product->{ProductConstant::IMG_URL} = $filePath ?? null;
+            $product->{ProductConstant::IMG_URL} = $filePath ?? $product->{ProductConstant::IMG_URL};
+
 
             $product->save();
 
