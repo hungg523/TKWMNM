@@ -68,7 +68,6 @@ class UpdateProductController extends Controller
             $product->{ProductConstant::CATEGORY_ID} = $request->{ProductConstant::CATEGORY_ID} ?? $product->{ProductConstant::CATEGORY_ID};
             $product->{ProductConstant::IMG_URL} = $filePath ?? $product->{ProductConstant::IMG_URL};
 
-
             $product->save();
 
             DB::commit();
