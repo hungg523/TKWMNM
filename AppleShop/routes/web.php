@@ -100,7 +100,7 @@ Route::prefix('useraddress')->group(function () {
 
 Route::prefix('order')->group(function () {
     Route::post('/create', [CreateOrderController::class, 'create']);
-    Route::put('/change-status', [ChangeStatusController::class, 'changestatus']);
+    Route::put('/change-status/{id}', [ChangeStatusController::class, 'changestatus']);
     Route::get('/get-all', [GetAllOrderController::class, 'index']);
     Route::get('/get-by-customer-id/{id}', [GetOrderByCustomerIdController::class, 'getordersbycustomerid']);
     Route::get('/get-by-id/{id}', [GetOrderByIdController::class, 'getorderbyid']);

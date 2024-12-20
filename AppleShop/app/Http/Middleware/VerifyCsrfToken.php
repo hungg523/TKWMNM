@@ -55,6 +55,6 @@ class VerifyCsrfToken extends Middleware
 
         //Order
         '/order/create',
-        '/order/change-status',
+        '/order/change-status/*',
     ];
 }
