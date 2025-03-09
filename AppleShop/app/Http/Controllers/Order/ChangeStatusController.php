@@ -17,10 +17,10 @@ class ChangeStatusController extends Controller
         DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [
-                OrderConstant::ORDER_ID => 'required|integer',
+                OrderConstant::ORDER_ID => 'integer',
                 OrderConstant::STATUS => 'string'
             ]);
-    
+
             if ($validator->fails()) {
                 return response()->json(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
             }
