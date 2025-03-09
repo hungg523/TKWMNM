@@ -8,7 +8,6 @@ use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Coupon;
 use App\Models\Product;
 use App\Constants\Order\OrderConstant;
 use App\Constants\OrderItem\OrderItemConstant;
@@ -19,7 +18,7 @@ use Illuminate\Support\Facades\Validator;
 class CreateOrderController extends Controller
 {
     public function create(Request $request)
-    {      
+    {
         DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [
@@ -38,7 +37,7 @@ class CreateOrderController extends Controller
 
             $allowedPayments = ['cod', 'vnpay'];
             if (!in_array($request->{OrderConstant::PAYMENT}, $allowedPayments)) {
-                throw new \Exception('Phương thức thanh toán không hợp lệ.');
+                throw new Exception('Phương thức thanh toán không hợp lệ.');
             }
 
             $coupon = null;
@@ -60,23 +59,26 @@ class CreateOrderController extends Controller
                     throw new \Exception("Sản phẩm ID {$item[OrderItemConstant::PRODUCT_ID]} không tồn tại.");
                 }
 
-                if ($product->stock < $item[OrderItemConstant::QUANTITY]) {
-                    throw new \Exception("Sản phẩm {$product->name} không đủ hàng trong kho.");
-                }
+                // if ($product->stock < $item[OrderItemConstant::QUANTITY]) {
+                //     throw new \Exception("Sản phẩm {$product->name} không đủ hàng trong kho.");
+                // }
 
-                $price = $product->price && $product->discount > 0 ? $product->discount : ($product->price ?? 0);
+                // $price = $product->price && $product->discount > 0 ? $product->discount : ($product->price ?? 0);
                 $orderItem = new OrderItem();
                 $orderItem->{OrderItemConstant::ORDER_ID} = $order->{OrderConstant::ORDER_ID};
-                $orderItem->{OrderItemConstant::PRODUCT_ID} = $item -> {OrderItemConstant::PRODUCT_ID};
-                $orderItem->{OrderItemConstant::QUANTITY} = $item -> {OrderItemConstant::QUANTITY};
-                $orderItem->{OrderItemConstant::UNIT_PRICE} = $price;
-                $orderItem->{OrderItemConstant::TOTAL} = $price * $item[OrderItemConstant::QUANTITY];
+                // $orderItem->{OrderItemConstant::PRODUCT_ID} = $item -> {OrderItemConstant::PRODUCT_ID};
+                $orderItem->{OrderItemConstant::PRODUCT_ID} = 1;
+                // $orderItem->{OrderItemConstant::QUANTITY} = $item -> {OrderItemConstant::QUANTITY};
+                $orderItem->{OrderItemConstant::QUANTITY} = 10;
+                $orderItem->{OrderItemConstant::UNIT_PRICE} = 100000;
+                // $orderItem->{OrderItemConstant::TOTAL} = $price * $item[OrderItemConstant::QUANTITY];
+                $orderItem->{OrderItemConstant::TOTAL} = 100000;
                 $orderItem->save();
 
                 $orderTotalPrice += $orderItem->{OrderItemConstant::TOTAL};
 
-                $product->stock -= $item[OrderItemConstant::QUANTITY];
-                $product->save();
+                // $product->stock -= $item[OrderItemConstant::QUANTITY];
+                // $product->save();
             }
 
             $order->{OrderConstant::TOTAL_AMOUNT} = $orderTotalPrice;
@@ -105,34 +107,48 @@ class CreateOrderController extends Controller
         $vnp_Url = env('VNPAY_URL');
         $vnp_Returnurl = env('VNPAY_RETURN_URL');
 
-        $vnp_TxnRef = $order->{OrderConstant::ORDER_ID};
-        $vnp_OrderInfo = "Thanh toán đơn hàng {$order->{OrderConstant::ORDER_ID}}";
-        $vnp_Amount = $order->{OrderConstant::TOTAL_AMOUNT} * 100;
-        $vnp_Locale = "vn";
-        $vnp_BankCode = "";
-
         $inputData = array(
             "vnp_Version" => "2.1.0",
             "vnp_TmnCode" => $vnp_TmnCode,
-            "vnp_Amount" => $vnp_Amount,
+            "vnp_Amount" => intval($order->{OrderConstant::TOTAL_AMOUNT} * 100),
             "vnp_Command" => "pay",
             "vnp_CreateDate" => date('YmdHis'),
             "vnp_CurrCode" => "VND",
             "vnp_IpAddr" => request()->ip(),
-            "vnp_Locale" => $vnp_Locale,
-            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_Locale" => "vn",
+            "vnp_OrderInfo" => "Thanh toan don hang " . strval($order->{OrderConstant::ORDER_ID}),
             "vnp_ReturnUrl" => $vnp_Returnurl,
-            "vnp_TxnRef" => $vnp_TxnRef,
-            "vnp_BankCode" => $vnp_BankCode,
+            "vnp_TxnRef" => uniqid(), // Tạo TxnRef duy nhất
+            "vnp_OrderType" => "billpayment",
+            "vnp_ExpireDate" => date('YmdHis', strtotime('+1 days')),
         );
 
+        // Xóa vnp_BankCode nếu trống
+        if (empty($inputData["vnp_BankCode"])) {
+            unset($inputData["vnp_BankCode"]);
+        }
+
+        // Tính SecureHash
         ksort($inputData);
-        $query = http_build_query($inputData);
-        $hashdata = urldecode($query);
-        $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+        $hashData = [];
+        foreach ($inputData as $key => $value) {
+            if ($key != "vnp_SecureHash" && $key != "vnp_SecureHashType") {
+                $hashData[] = $key . "=" . $value;
+            }
+        }
+        $hashString = implode("&", $hashData);
+        $hashString = urldecode($hashString); // Giữ nguyên format
+        $vnpSecureHash = hash_hmac('sha512', $hashString, env('VNPAY_HASH_SECRET'));
+        $inputData["vnp_SecureHash"] = $vnpSecureHash;
 
-        $vnp_Url .= "?" . $query . "&vnp_SecureHash=" . $vnpSecureHash;
+        $paymentUrl = $vnp_Url . "?" . http_build_query($inputData);
 
-        return response()->json(["payment_url" => $vnp_Url]);
+        
+
+        if ($vnpSecureHash !== $inputData['vnp_SecureHash']) {
+            dd("❌ Chữ ký bị thay đổi trước khi gửi!", $hashString, $vnpSecureHash, $inputData['vnp_SecureHash']);
+        }
+        // Trả về URL thanh toán
+        return response()->json(['success' => true, "payment_url" => $paymentUrl], 200);
     }
 }
